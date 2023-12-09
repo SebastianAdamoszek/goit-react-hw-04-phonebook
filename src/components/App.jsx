@@ -11,15 +11,24 @@ const App = () => {
   const [number, setNumber] = useState('');
   const [filter, setFilter] = useState('');
   const [shouldSort, setShouldSort] = useState(false);
+////////////////////////
+  useEffect(() => {
+    // Odczytanie listy kontaktów z localStorage
+    const storedContacts = JSON.parse(localStorage.getItem('contacts'));
+    if (storedContacts) {
+      setContacts(storedContacts);
+    }
+  }, []);
 
   useEffect(() => {
+    // Zapisanie listy kontaktów do localStorage po zmianie
     localStorage.setItem('contacts', JSON.stringify(contacts));
     if (shouldSort) {
       sortContacts();
       setShouldSort(false); 
     }
   }, [contacts, shouldSort]);
-
+////////////////////////
   const sortContacts = () => {
     setContacts(prevContacts =>
       [...prevContacts].sort((a, b) => a.name.localeCompare(b.name))
@@ -65,7 +74,7 @@ const App = () => {
     setContacts(prevContacts =>
       prevContacts.filter(contact => contact.id !== id)
     );
-    setFilter('');
+    setFilter(''); 
   };
 
   return (
